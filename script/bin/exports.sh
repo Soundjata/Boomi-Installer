@@ -17,7 +17,7 @@ export INSTALL_DIR="./dev-atom"
 
 export accountName="Viseo"
 export accountId="viseo-GKKV2Z"
-export authToken="BOOMI_TOKEN.jean-marc.coupin@viseo.com:8bb5d5d1-d191-4f8d-a436-382f0ee8e5bb"
+export authToken="BOOMI_TOKEN.username@company.com:aP1k3y02-mob1-b00M-M0b1-at0msph3r3aa"
 export regressionTestAuthToken=""
 
 # Keys that can change
