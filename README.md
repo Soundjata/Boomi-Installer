@@ -1,2 +1,2 @@
 # Boomi
-Test Boomi CI/CD
+Test Boomi Installer
