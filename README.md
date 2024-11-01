@@ -68,7 +68,7 @@ export authToken="BOOMI_TOKEN..."
 
 export VERBOSE="false"
 export SLEEP_TIMER=0.2
-
+```
 
 ## Notes
 
