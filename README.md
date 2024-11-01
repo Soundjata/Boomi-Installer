@@ -1,6 +1,6 @@
-# Boomi Installer Scripts
+# Scripts d'installation Boomi
 
-This directory contains shell scripts used for installing and managing Boomi Atoms and Molecules on Linux systems.
+Ce répertoire contient des scripts shell utilisés pour installer et gérer les atomes et molécules Boomi sur les systèmes Linux.Ce répertoire contient des scripts shell utilisés pour installer et gérer les atomes et molécules Boomi sur les systèmes Linux.
 
 ## Scripts
 
