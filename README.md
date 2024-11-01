@@ -29,6 +29,47 @@ This directory contains shell scripts used for installing and managing Boomi Ato
 1. **Configuration:** Edit `bin/exports.sh` to set the desired installation directory, Atom/Molecule name, and other configuration options.
 2. **Run the installer:** Execute `./menu.sh` to start the interactive installation process.
 
+## Configuration: `bin/exports.sh`
+
+The `bin/exports.sh` file is crucial for configuring the Boomi Installer. It contains important variables that control various aspects of the installation process. 
+
+**Key Variables:**
+
+- **`atomType`:** Specifies whether you are installing an "ATOM" or "MOLECULE".
+- **`atomName`:** The name of your Boomi Atom or Molecule.
+- **`INSTALL_DIR`:** The directory where the Boomi Atom/Molecule will be installed.
+- **`service_user`:** The username of the service user that will run the Boomi service.
+- **`service_group`:** The group name for the service user.
+- **`accountName`:** The name of your Boomi account.
+- **`accountId`:** Your Boomi account ID.
+- **`authToken`:** Your Boomi authentication token. **Important:** Keep this token secure!
+- **`VERBOSE`:** Set to "true" to enable verbose output for debugging.
+- **`SLEEP_TIMER`:** A delay (in seconds) between API calls to avoid rate limiting.
+
+**Before running the installer:**
+
+1. **Open `bin/exports.sh` in a text editor.**
+2. **Carefully review and modify the variables according to your environment and requirements.**
+3. **Save the changes.**
+
+**Example:**
+
+```bash
+export atomType="ATOM"
+export atomName="MyProductionAtom"
+export INSTALL_DIR="/opt/boomi"
+
+export service_user="boomiuser"
+export service_group="boomigroup"
+
+export accountName="MyCompany"
+export accountId="mycompany-ABCD12"
+export authToken="BOOMI_TOKEN..." 
+
+export VERBOSE="false"
+export SLEEP_TIMER=0.2
+
+
 ## Notes
 
 - These scripts are provided as-is and may require modifications to suit your specific environment and requirements.
