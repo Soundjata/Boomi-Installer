@@ -13,7 +13,6 @@ chown -R "$service_user":"$service_group" "$INSTALL_DIR"
 service_content="[Unit]
 Description= Boomi ${atomName}
 After=network.target
-
 [Service]
 Type=forking
 User=${service_user}
@@ -21,7 +20,6 @@ Restart=always
 ExecStart=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom start
 ExecStop=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom stop
 ExecReload=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom restart
-
 [Install]
 WantedBy=multi-user.target
 "
