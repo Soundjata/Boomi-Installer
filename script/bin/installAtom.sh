@@ -52,3 +52,7 @@ fi
 -VinstallToken=$tokenId \
 -VatomName=$atomName ${proxyParams}\
 -dir $installDir 
+
+# update container properties
+input="conf/container.properties"
+while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
