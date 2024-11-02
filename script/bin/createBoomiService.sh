@@ -16,6 +16,7 @@ After=network.target
 [Service]
 Type=forking
 User=${service_user}
+Group=${service_group}
 Restart=always
 ExecStart=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom start
 ExecStop=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom stop
