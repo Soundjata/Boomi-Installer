@@ -8,3 +8,4 @@ sudo mkdir /etc/Boomi-Installer
 sudo git clone https://github.com/Soundjata/Boomi-Installer.git /etc/Boomi-Installer
 sudo chmod +x /etc/Boomi-Installer/script/menu.sh
 sudo chown $ID:$ID -R /etc/Boomi-Installer
+

@@ -15,6 +15,11 @@ Ce répertoire contient des scripts shell utilisés pour installer et gérer les
 - **`bin/installerToken.sh`:** Gère la récupération et le stockage du jeton d'installation Boomi.
 
 ## Utilisation
+Pour simplifier l'installation, vous pouvez utiliser la commande suivante qui téléchargera et exécutera le script d'installation principal :
+
+```bash
+bash <(wget -qO- https://raw.githubusercontent.com/Soundjata/Boomi-Installer/refs/heads/main/script/install.sh)
+'''
 1. **Configuration:** Modifiez `bin/exports.sh` pour définir le répertoire d'installation souhaité, le nom de l'Atome/Molécule et autres options de configuration.
 2. **Lancer l'installateur:** Exécutez `./menu.sh` pour démarrer le processus d'installation interactif.
 
