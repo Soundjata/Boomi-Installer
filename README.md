@@ -42,6 +42,8 @@ Le fichier `bin/exports.sh` est crucial pour configurer l'installateur Boomi. Il
 **Variables optionnelles:**
 - **`WORK_DIR`:** (Optionnel) Chemin du répertoire de travail pour la molécule. Si non défini, la valeur par défaut sera "/var/boomi/work".
 - **`TMP_DIR`:** (Optionnel) Chemin du répertoire temporaire pour la molécule. Si non défini, la valeur par défaut sera "/var/boomi/tmp".
+- **`JRE_HOME`:** (Optionnel) Chemin du répertoire d'accueil JRE (Java Runtime Environment). Définissez cette variable si vous souhaitez utiliser une JRE spécifique.
+- **`JAVA_HOME`:** (Optionnel) Chemin du répertoire d'accueil JDK (Java Development Kit). Définissez cette variable si vous souhaitez utiliser un JDK spécifique.
 - **`proxyHost`:**  (Optionnel) Nom d'hôte du serveur proxy à utiliser pendant l'installation.
 - **`proxyPort`:** (Optionnel) Numéro de port du serveur proxy.
 - **`proxyUser`:** (Optionnel) Nom d'utilisateur pour l'authentification du proxy.
