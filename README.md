@@ -35,7 +35,7 @@ Le fichier `bin/exports.sh` est crucial pour configurer l'installateur Boomi. Il
 - **`service_group`:** Le nom du groupe pour l'utilisateur du service.
 - **`accountName`:** Le nom de votre compte Boomi.
 - **`accountId`:** Votre ID de compte Boomi.
-- **`authToken`:** Votre jeton d'authentification Boomi. **Important:** Gardez ce jeton en sécurité!
+- **`authToken`:** Votre jeton d'authentification Boomi. Voir comment créer un jeton [içi](https://help.boomi.com/bundle/integration/page/int-AtomSphere_API_Tokens_page.html)
 - **`VERBOSE`:** Mettre à "true" pour activer la sortie détaillée pour le débogage.
 - **`SLEEP_TIMER`:** Un délai (en secondes) entre les appels API pour éviter les limitations de taux.
 
