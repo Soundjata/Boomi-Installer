@@ -39,6 +39,15 @@ Le fichier `bin/exports.sh` est crucial pour configurer l'installateur Boomi. Il
 - **`VERBOSE`:** Mettre à "true" pour activer la sortie détaillée pour le débogage.
 - **`SLEEP_TIMER`:** Un délai (en secondes) entre les appels API pour éviter les limitations de taux.
 
+**Variables optionnelles:**
+- **`WORK_DIR`:** (Optionnel) Chemin du répertoire de travail pour la molécule. Si non défini, la valeur par défaut sera "/var/boomi/work".
+- **`TMP_DIR`:** (Optionnel) Chemin du répertoire temporaire pour la molécule. Si non défini, la valeur par défaut sera "/var/boomi/tmp".
+- **`proxyHost`:**  (Optionnel) Nom d'hôte du serveur proxy à utiliser pendant l'installation.
+- **`proxyPort`:** (Optionnel) Numéro de port du serveur proxy.
+- **`proxyUser`:** (Optionnel) Nom d'utilisateur pour l'authentification du proxy.
+- **`proxyPassword`:** (Optionnel) Mot de passe pour l'authentification du proxy.
+
+
 **Avant de lancer l'installateur:**
 1. **Ouvrez `bin/exports.sh` dans un éditeur de texte.**
 2. **Examinez attentivement et modifiez les variables selon votre environnement et vos besoins.**
@@ -56,6 +65,15 @@ export accountId="masociete-ABCD12"
 export authToken="BOOMI_TOKEN.username@company.com:aP1k3y02-mob1-b00M-M0b1-at0msph3r3aa" 
 export VERBOSE="false"
 export SLEEP_TIMER=0.2
+
+export WORK_DIR="/mnt/data/boomi/work" # Exemple pour WORK_DIR
+export TMP_DIR="/mnt/data/boomi/tmp" # Exemple pour TMP_DIR
+export JRE_HOME="/usr/lib/jvm/java-11-openjdk-amd64" # Exemple pour JRE_HOME
+export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64" # Exemple pour JAVA_HOME
+export proxyHost="mon.proxy.com" # Exemple pour proxyHost
+export proxyPort="8080" # Exemple pour proxyPort
+export proxyUser="monutilisateurproxy" # Exemple pour proxyUser
+export proxyPassword="monmotdepasseproxy" # Exemple pour proxyPassword
 ```
 
 ## Notes
