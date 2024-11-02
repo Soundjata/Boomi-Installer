@@ -53,7 +53,7 @@ export service_user="boomiuser"
 export service_group="boomigroup"
 export accountName="MaSociete"
 export accountId="masociete-ABCD12"
-export authToken="BOOMI_TOKEN..." 
+export authToken="BOOMI_TOKEN.username@company.com:aP1k3y02-mob1-b00M-M0b1-at0msph3r3aa" 
 export VERBOSE="false"
 export SLEEP_TIMER=0.2
 ```
