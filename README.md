@@ -1,81 +1,61 @@
-# Boomi Installer Scripts
+# Scripts d'installation Boomi
 
-This directory contains shell scripts used for installing and managing Boomi Atoms and Molecules on Linux systems.
+Ce répertoire contient des scripts shell utilisés pour installer et gérer les atomes et molécules Boomi sur les systèmes Linux.
 
 ## Scripts
+- **`menu.sh`:** Script de menu interactif principal pour l'installateur Boomi. Il offre des options pour configurer l'installation, télécharger les installateurs, installer/désinstaller les Atomes/Molécules, gérer le service Boomi, et plus encore.
+- **`bin/common.sh`:** Contient des fonctions et variables communes utilisées par d'autres scripts.
+- **`bin/createBoomiService.sh`:** Crée un service systemd pour l'Atome/Molécule Boomi, permettant son démarrage automatique au démarrage et sa gestion avec `systemctl`.
+- **`bin/createUserGroup.sh`:** Crée le groupe de service (`boomigroup`) et l'utilisateur (`boomiuser`) nécessaires pour exécuter le service Boomi.
+- **`bin/createUserService.sh`:** Crée l'utilisateur du service Boomi.
+- **`bin/deleteUserService.sh`:** Supprime l'utilisateur et le groupe du service Boomi.
+- **`bin/exports.sh`:** Stocke les variables de configuration pour l'installateur, comme le répertoire d'installation, le nom de l'Atome/Molécule, les détails de l'utilisateur du service, etc.
+- **`bin/installAtom.sh`:** Automatise l'installation d'un Atome Boomi en utilisant le script d'installation officiel (`atom_install64.sh`).
+- **`bin/installMolecule.sh`:** Automatise l'installation d'une Molécule Boomi en utilisant le script d'installation officiel (`molecule_install64.sh`).
+- **`bin/installerToken.sh`:** Gère la récupération et le stockage du jeton d'installation Boomi.
 
-- **`menu.sh`:** The main interactive menu script for the Boomi Installer. It provides options to configure the installation, download installers, install/uninstall Atoms/Molecules, manage the Boomi service, and more.
-
-- **`bin/common.sh`:** Contains common functions and variables used by other scripts.
-
-- **`bin/createBoomiService.sh`:** Creates a systemd service for the Boomi Atom/Molecule, enabling it to start automatically on boot and be managed with `systemctl`.
-
-- **`bin/createUserGroup.sh`:** Creates the service group (`boomigroup`) and user (`boomiuser`) required for running the Boomi service.
-
-- **`bin/createUserService.sh`:** Creates the Boomi service user.
-
-- **`bin/deleteUserService.sh`:** Deletes the Boomi service user and group.
-
-- **`bin/exports.sh`:** Stores configuration variables for the installer, such as the installation directory, Atom/Molecule name, service user details, etc.
-
-- **`bin/installAtom.sh`:** Automates the installation of a Boomi Atom using the official installer script (`atom_install64.sh`).
-
-- **`bin/installMolecule.sh`:** Automates the installation of a Boomi Molecule using the official installer script (`molecule_install64.sh`).
-
-- **`bin/installerToken.sh`:** Handles the retrieval and storage of the Boomi installation token.
-
-## Usage
-
-1. **Configuration:** Edit `bin/exports.sh` to set the desired installation directory, Atom/Molecule name, and other configuration options.
-2. **Run the installer:** Execute `./menu.sh` to start the interactive installation process.
+## Utilisation
+1. **Configuration:** Modifiez `bin/exports.sh` pour définir le répertoire d'installation souhaité, le nom de l'Atome/Molécule et autres options de configuration.
+2. **Lancer l'installateur:** Exécutez `./menu.sh` pour démarrer le processus d'installation interactif.
 
 ## Configuration: `bin/exports.sh`
+Le fichier `bin/exports.sh` est crucial pour configurer l'installateur Boomi. Il contient des variables importantes qui contrôlent divers aspects du processus d'installation.
 
-The `bin/exports.sh` file is crucial for configuring the Boomi Installer. It contains important variables that control various aspects of the installation process. 
+**Variables clés:**
+- **`atomType`:** Spécifie si vous installez un "ATOM" ou une "MOLECULE".
+- **`atomName`:** Le nom de votre Atome ou Molécule Boomi.
+- **`INSTALL_DIR`:** Le répertoire où l'Atome/Molécule Boomi sera installé.
+- **`service_user`:** Le nom d'utilisateur du service qui exécutera le service Boomi.
+- **`service_group`:** Le nom du groupe pour l'utilisateur du service.
+- **`accountName`:** Le nom de votre compte Boomi.
+- **`accountId`:** Votre ID de compte Boomi.
+- **`authToken`:** Votre jeton d'authentification Boomi. **Important:** Gardez ce jeton en sécurité!
+- **`VERBOSE`:** Mettre à "true" pour activer la sortie détaillée pour le débogage.
+- **`SLEEP_TIMER`:** Un délai (en secondes) entre les appels API pour éviter les limitations de taux.
 
-**Key Variables:**
+**Avant de lancer l'installateur:**
+1. **Ouvrez `bin/exports.sh` dans un éditeur de texte.**
+2. **Examinez attentivement et modifiez les variables selon votre environnement et vos besoins.**
+3. **Sauvegardez les modifications.**
 
-- **`atomType`:** Specifies whether you are installing an "ATOM" or "MOLECULE".
-- **`atomName`:** The name of your Boomi Atom or Molecule.
-- **`INSTALL_DIR`:** The directory where the Boomi Atom/Molecule will be installed.
-- **`service_user`:** The username of the service user that will run the Boomi service.
-- **`service_group`:** The group name for the service user.
-- **`accountName`:** The name of your Boomi account.
-- **`accountId`:** Your Boomi account ID.
-- **`authToken`:** Your Boomi authentication token. **Important:** Keep this token secure!
-- **`VERBOSE`:** Set to "true" to enable verbose output for debugging.
-- **`SLEEP_TIMER`:** A delay (in seconds) between API calls to avoid rate limiting.
-
-**Before running the installer:**
-
-1. **Open `bin/exports.sh` in a text editor.**
-2. **Carefully review and modify the variables according to your environment and requirements.**
-3. **Save the changes.**
-
-**Example:**
-
+**Exemple:**
 ```bash
 export atomType="ATOM"
-export atomName="MyProductionAtom"
+export atomName="MonAtomeProduction"
 export INSTALL_DIR="/opt/boomi"
-
 export service_user="boomiuser"
 export service_group="boomigroup"
-
-export accountName="MyCompany"
-export accountId="mycompany-ABCD12"
+export accountName="MaSociete"
+export accountId="masociete-ABCD12"
 export authToken="BOOMI_TOKEN..." 
-
 export VERBOSE="false"
 export SLEEP_TIMER=0.2
 ```
 
 ## Notes
+- Ces scripts sont fournis tels quels et peuvent nécessiter des modifications pour s'adapter à votre environnement et vos besoins spécifiques.
+- Assurez-vous d'avoir les permissions nécessaires pour exécuter les scripts et apporter des modifications au système.
+- Il est recommandé d'examiner les scripts et de comprendre leur fonctionnement avant de les exécuter.
 
-- These scripts are provided as-is and may require modifications to suit your specific environment and requirements.
-- Ensure that you have the necessary permissions to execute the scripts and make changes to the system.
-- It's recommended to review the scripts and understand their functionality before running them.
-
-## Contributing
-
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+## Contribution
+Les contributions sont les bienvenues ! Si vous trouvez des problèmes ou avez des suggestions d'améliorations, n'hésitez pas à ouvrir une issue ou à soumettre une pull request.
