@@ -1,6 +1,6 @@
 # Scripts d'installation Boomi
 
-Ce répertoire contient des scripts shell utilisés pour installer et gérer les atomes et molécules Boomi sur les systèmes Linux.
+Ce répertoire contient des scripts shell utilisés pour installer et gérer les atomes, molécules et gateways Boomi sur les systèmes Linux.
 
 ## Scripts
 - **`menu.sh`:** Script de menu interactif principal pour l'installateur Boomi. Il offre des options pour configurer l'installation, télécharger les installateurs, installer/désinstaller les Atomes/Molécules, gérer le service Boomi, et plus encore.
@@ -28,7 +28,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/Soundjata/Boomi-Installer/ref
 Le fichier `bin/exports.sh` est crucial pour configurer l'installateur Boomi. Il contient des variables importantes qui contrôlent divers aspects du processus d'installation.
 
 **Variables clés:**
-- **`atomType`:** Spécifie si vous installez un "ATOM" ou une "MOLECULE".
+- **`atomType`:** Spécifie si vous installez un "ATOM", "MOLECULE" ou une "GATEWAY".
 - **`atomName`:** Le nom de votre Atome ou Molécule Boomi.
 - **`INSTALL_DIR`:** Le répertoire où l'Atome/Molécule Boomi sera installé.
 - **`service_user`:** Le nom d'utilisateur du service qui exécutera le service Boomi.
