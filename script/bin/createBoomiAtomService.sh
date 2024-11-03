@@ -18,9 +18,9 @@ Type=forking
 User=${service_user}
 Group=${service_group}
 Restart=always
-ExecStart=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom start
-ExecStop=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom stop
-ExecReload=${INSTALL_DIR}/${atomType}_${atomName}/bin/atom restart
+ExecStart=${INSTALL_DIR}/Atom_${atomName}/bin/atom start
+ExecStop=${INSTALL_DIR}/Atom_${atomName}/bin/atom stop
+ExecReload=${INSTALL_DIR}/Atom_${atomName}/bin/atom restart
 [Install]
 WantedBy=multi-user.target
 "

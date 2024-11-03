@@ -90,7 +90,7 @@ case "$y" in
   f)
     tput reset
     clear
-    source ./bin/createBoomiService.sh
+    source ./bin/createBoomiAtomService.sh
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
 
