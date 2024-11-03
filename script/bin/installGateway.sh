@@ -20,7 +20,7 @@ then
 fi
 
 installDir=${INSTALL_DIR}
-ATOM_HOME=$installDir/Molecule_$atomName
+ATOM_HOME=$installDir/Gateway_$atomName
 
 optionParams=""
 if [ -z "${WORK_DIR}" ]
@@ -65,7 +65,7 @@ then
 fi
 
 
-./molecule_install64.sh -q -console  \
+./gateway_install64.sh -q -console  \
 -VinstallToken=$tokenId \
 -VatomName=$atomName \
 -dir $installDir 

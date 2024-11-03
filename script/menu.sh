@@ -13,13 +13,15 @@ tput cup 2 	3; echo -ne  "\033[46;30m              BOOMI INSTALLER              
 tput cup 5 3; echo_cyan "a. Editer la configuration"
 
 tput cup 7  3; 	case $atomType in
-				"ATOM") if [ -f ./atom_install64.sh ]; then echo_green "b. L'installer atom_install64.sh est téléchargé."; else echo_red "b. Télécharger l'installer atom_install64.sh"; fi;;
+				"ATOM") 	if [ -f ./atom_install64.sh ]; then echo_green "b. L'installer atom_install64.sh est téléchargé."; else echo_red "b. Télécharger l'installer atom_install64.sh"; fi;;
 				"MOLECULE") if [ -f ./molecule_install64.sh ]; then echo_green "b. L'installer molecule_install64.sh est déjà téléchargé."; else echo_red "b. Télécharger l'installer molecule_install64.sh"; fi;;
+				"GATEWAY")	if [ -f ./gateway_install64.sh ]; then echo_green "b. L'installer gateway_install64.sh est déjà téléchargé."; else echo_red "b. Télécharger l'installer gateway_install64.sh"; fi;;
 				esac
 
 tput cup 8  3; case $atomType in
-				"ATOM") if [ -f "${INSTALL_DIR}/Atom_${atomName}/bin/atom" ]; then echo_green "c. l'Atom $atomName est installé"; else echo_red "c. Lancer l'instalation de l'Atom $atomName"; fi;;
+				"ATOM") 	if [ -f "${INSTALL_DIR}/Atom_${atomName}/bin/atom" ]; then echo_green "c. l'Atom $atomName est installé"; else echo_red "c. Lancer l'instalation de l'Atom $atomName"; fi;;
 				"MOLECULE") if [ -f "${INSTALL_DIR}/Molecule_${atomName}/bin/atom" ]; then echo_green "c. la molecule $atomName est installé"; else echo_red "c. Lancer l'instalation de la molecule $atomName"; fi;;
+				"GATEWAY")  if [ -f "${INSTALL_DIR}/Gateway_${atomName}/bin/atom" ]; then echo_green "c. la gateway $atomName est installé"; else echo_red "c. Lancer l'instalation de la gateway $atomName"; fi;;
 				esac
 
 tput cup 10  3; if getent group "$service_group" >/dev/null 2>&1; then echo_green "d. Le groupe user '$service_group' existe."; else echo_red "d. Créer le groupe user '$service_group'."; fi
@@ -50,6 +52,7 @@ case "$y" in
 	case $atomType in
 	"ATOM") if [ -f ./atom_install64.sh ]; then echo_green "L'installer atom_install64.sh est téléchargé."; else wget https://platform.boomi.com/atom/atom_install64.sh; chmod +x ./atom_install64.sh; fi;;
 	"MOLECULE") if [ -f ./molecule_install64.sh ]; then echo_green "L'installer molecule_install64.sh est téléchargé."; else wget https://platform.boomi.com/atom/molecule_install64.sh; chmod +x ./molecule_install64.sh; fi;;
+	"GATEWAY") if [ -f ./gateway_install64.sh ]; then echo_green "L'installer gateway_install64.sh est téléchargé."; else wget https://platform.boomi.com/atom/gateway_install64.sh; chmod +x ./gateway_install64.sh; fi;;
 	esac
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
@@ -66,8 +69,14 @@ case "$y" in
 				installer_script="./bin/installMolecule.sh"
 				extra_args="WORK_DIR=\"${WORK_DIR}\" TMP_DIR=\"${TMP_DIR}\""
 				source bin/installerToken.sh atomType=${atomType};;
+	"GATEWAY") ATOM_HOME=${INSTALL_DIR}/Gateway_${atomName}
+				installer_script="./bin/installGateway.sh"
+				extra_args="WORK_DIR=\"${WORK_DIR}\" TMP_DIR=\"${TMP_DIR}\""
+				source bin/installerToken.sh atomType=${atomType};;
 	esac
 	ATOM_HOME="${INSTALL_DIR}/${atomType}_${atomName}"
+	echo ${installer_script}
+	echo ${extra_args}
     ${installer_script} atomName="${atomName}" tokenId="${tokenId}" INSTALL_DIR="${INSTALL_DIR}" JRE_HOME="${JRE_HOME}" JAVA_HOME="${JAVA_HOME}" proxyHost="${proxyHost}" proxyPort="${proxyPort}" proxyUser="${proxyUser}" proxyPassword="${proxyPassword}" ${extra_args}
 	source ./menu.sh
   	read -p "Appuyez sur [ENTREE] pour continuer..."
@@ -90,7 +99,11 @@ case "$y" in
   f)
     tput reset
     clear
-    source ./bin/createBoomiAtomService.sh
+	case $atomType in
+		"ATOM") 	source ./bin/createBoomiAtomService.sh;;
+		"MOLECULE") source ./bin/createBoomiMoleculeService.sh;;
+		"GATEWAY") source ./bin/createBoomiGatewayService.sh;;
+	esac
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
 
@@ -125,6 +138,7 @@ case "$y" in
 	case $atomType in
 		"ATOM") 	ATOM_HOME=${INSTALL_DIR}/Atom_${atomName};;
 		"MOLECULE") ATOM_HOME=${INSTALL_DIR}/Molecule_${atomName};;
+		"GATEWAY")  ATOM_HOME=${INSTALL_DIR}/Gateway_${atomName};;
 	esac
     /${ATOM_HOME}/uninstall -q -console
 	read -p "Appuyez sur [ENTREE] pour continuer..."

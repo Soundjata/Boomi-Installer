@@ -9,9 +9,9 @@ export WORKSPACE=`pwd`
 # The following credentials can be stored in parameter store and retrieved dynamically 
 
 
-export atomType="ATOM"
-export atomName="LOCAL_LNX_ATM_DEV_01"
-export INSTALL_DIR="/dev-atom"
+export atomType="GATEWAY"
+export atomName="LOCAL_LNX_GTW_DEV_01"
+export INSTALL_DIR="/dev-gateway"
 
 export service_user="boomiuser"
 export service_group="boomigroup"
@@ -19,7 +19,7 @@ export service_group="boomigroup"
 
 export accountName="Viseo"
 export accountId="viseo-GKKV2Z"
-export authToken=""
+export authToken="BOOMI_TOKEN.jean-marc.coupin@viseo.com:8bb5d5d1-d191-4f8d-a436-382f0ee8e5bb"
 
 # Keys that can change
 export VERBOSE="false" # Bash verbose output; set to true only for testing, will slow execution.
