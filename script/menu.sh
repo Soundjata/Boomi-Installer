@@ -27,11 +27,13 @@ tput cup 8  3; case $atomType in
 tput cup 10  3; if getent group "$service_group" >/dev/null 2>&1; then echo_green "d. Le groupe user '$service_group' existe."; else echo_red "d. Créer le groupe user '$service_group'."; fi
 tput cup 11  3; if id -u "$service_user" >/dev/null 2>&1; then echo_green "e. Le user de service '$service_user' existe."; else echo_red "e. Créer le user de service '$service_user'."; fi
 tput cup 12 3; if systemctl is-enabled "boomi-${atomName}.service" >/dev/null 2>&1; then echo_green "f. Le service Boomi '$atomName' est activé."; else echo_red "f. Créer le service Boomi '$atomName'."; fi
+tput cup 13 3; if [ -f "${INSTALL_DIR}/Molecule_${atomName}/bin/restart-systemd.sh" ]; then echo_green "g. Le script de redémarrage 'restart-systemd.sh' existe."; else echo_red "g. Créer le script de redémarrage 'restart-systemd.sh'."; fi
 
-tput cup 14 3; echo_cyan "u. Supprimer le service Boomi '$atomName'" 				
-tput cup 15 3; echo_cyan "v. Delete Boomi service user and group"
-tput cup 16 3; echo_cyan "w. Désinstaller l'Atom $atomName"
-tput cup 17 3; echo_cyan "x. Quitter"
+
+tput cup 15 3; echo_cyan "u. Supprimer le service Boomi '$atomName'" 				
+tput cup 16 3; echo_cyan "v. Delete Boomi service user and group"
+tput cup 17 3; echo_cyan "w. Désinstaller l'Atom $atomName"
+tput cup 18 3; echo_cyan "x. Quitter"
 
 
 
@@ -96,6 +98,13 @@ case "$y" in
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 
+  g)
+    tput reset
+    clear
+    source ./bin/createRestartSystemd.sh
+    read -p "Appuyez sur [ENTREE] pour continuer..."
+    ;;
+
   f)
     tput reset
     clear
@@ -141,6 +150,7 @@ case "$y" in
 		"GATEWAY")  ATOM_HOME=${INSTALL_DIR}/Gateway_${atomName};;
 	esac
     /${ATOM_HOME}/uninstall -q -console
+	rm *_install64.sh
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 

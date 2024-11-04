@@ -12,12 +12,12 @@ chown -R "$service_user":"$service_group" "$INSTALL_DIR"
 # Construct the service content
 service_content="[Unit]
 Description=Boomi Atom
-SourcePath=/${INSTALL_DIR}/Molecule_${atomName}
+SourcePath=${INSTALL_DIR}/Molecule_${atomName}
 After=network.target
 [Service]
 LimitNOFILE=65536
 LimitNPROC=65536
-Environment=\"INSTALL4J_JAVA_HOME_OVERRIDE=/${INSTALL_DIR}/Molecule_${atomName}/jre\"
+Environment=\"INSTALL4J_JAVA_HOME_OVERRIDE=${INSTALL_DIR}/Molecule_${atomName}/jre\"
 Type=forking
 Restart=always
 TimeoutSec=5min
@@ -27,9 +27,9 @@ GuessMainPID=yes
 RemainAfterExit=yes
 User=${service_user}
 Group=${service_group}
-ExecStart=/${INSTALL_DIR}/Molecule_${atomName}/bin/atom start
-ExecStop=/${INSTALL_DIR}/Molecule_${atomName}/bin/atom stop
-ExecReload=/${INSTALL_DIR}/Molecule_${atomName}/bin/atom restart
+ExecStart=${INSTALL_DIR}/Molecule_${atomName}/bin/atom start
+ExecStop=${INSTALL_DIR}/Molecule_${atomName}/bin/atom stop
+ExecReload=${INSTALL_DIR}/Molecule_${atomName}/bin/atom restart
 [Install]
 WantedBy=multi-user.target
 "
