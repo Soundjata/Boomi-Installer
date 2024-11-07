@@ -11,7 +11,7 @@ export WORKSPACE=`pwd`
 
 export atomType="GATEWAY"
 export atomName="LOCAL_LNX_GTW_DEV_01"
-export INSTALL_DIR="/dev-gareway"
+export INSTALL_DIR="/dev-gateway"
 
 export service_user="soundjata"
 export service_group="soundjata"

@@ -43,7 +43,7 @@ systemctl daemon-reload
 # Enable the service to start on boot
 systemctl enable boomi-${atomName}.service
 
-${ATOM_HOME}/bin/atom stop
+.${INSTALL_DIR}/Molecule_${atomName}/bin/atom stop
 
 systemctl start boomi-${atomName}.service
 echo "Boomi service created and enabled as 'boomi-${atomName}.service'."
