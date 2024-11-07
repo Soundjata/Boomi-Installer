@@ -9,9 +9,9 @@ export WORKSPACE=`pwd`
 # The following credentials can be stored in parameter store and retrieved dynamically 
 
 
-export atomType="MOLECULE"
-export atomName="LOCAL_LNX_MOL_DEV_01"
-export INSTALL_DIR="/dev-molecule"
+export atomType="ATOM"
+export atomName="LOCAL_LNX_ATM_DEV_01"
+export INSTALL_DIR="/dev-atom"
 
 export service_user="soundjata"
 export service_group="soundjata"
