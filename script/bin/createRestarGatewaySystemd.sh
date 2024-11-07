@@ -3,6 +3,21 @@
 # Source the exports file to get variable definitions
 #source ./bin/exports.sh
 
+sudo_content="
+${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-*.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-*.service
+"
+
+echo_yellow "Ajout des permissions sudo pour le user Boomi..."
+echo "$sudo_content" | sudo tee -a /etc/sudoers.d/boomi > /dev/null
+echo_green "Permissions sudo ajoutées avec succès."
+
+
 # Construct the script file path
 ATOM_HOME="${INSTALL_DIR}/Gateway_${atomName}"
 script_file="${INSTALL_DIR}/Gateway_${atomName}/bin/restart-systemd.sh"

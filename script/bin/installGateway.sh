@@ -72,9 +72,7 @@ fi
 
 
 # update container properties
-#input="conf/molecule_container.properties"
-#while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
-
-#echo "${JRE_HOME}" > $ATOM_HOME/.install4j/pref_jre.cfg
+input="conf/gateway_container.properties"
+while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
 
 ${ATOM_HOME}/bin/atom restart

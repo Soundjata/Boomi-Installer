@@ -91,14 +91,16 @@ case "$y" in
   d)
   	tput reset
 	clear
-	source ./bin/createUserGroup.sh
+	echo_yellow "Cette version ne prend pas en charge la création de groupe (voir admin systéme)"
+	#source ./bin/createUserGroup.sh
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 
   e)
   	tput reset
 	clear
-	source ./bin/createUserService.sh
+	echo_yellow "Cette version ne prend pas en charge la création de user (voir admin systéme)"
+	#source ./bin/createUserService.sh
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 
