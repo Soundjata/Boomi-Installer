@@ -43,7 +43,7 @@ systemctl daemon-reload
 # Enable the service to start on boot
 systemctl enable boomi-${atomName}.service
 
-.${INSTALL_DIR}/Gateway_${atomName}/bin/atom stop
+${INSTALL_DIR}/Gateway_${atomName}/bin/atom stop
 
 systemctl start boomi-${atomName}.service
 
