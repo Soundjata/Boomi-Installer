@@ -36,7 +36,6 @@ esac
 
 
 tput cup 15  3; echo_cyan "u. Supprimer le service Boomi '$atomName'" 				
-tput cup 16  3; echo_cyan "v. Delete Boomi service user and group"
 tput cup 17  3; echo_cyan "w. Désinstaller l'Atom $atomName"
 tput cup 18  3; echo_cyan "x. Quitter"
 
@@ -131,13 +130,6 @@ case "$y" in
     echo "Service Boomi '$atomName' removed."
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
-
-  v)
-    tput reset
-  	clear
-  	source ./bin/deleteUserService.sh
-  	read -p "Appuyez sur [ENTREE] pour continuer..."
-  	;;
 
   w)
 	tput reset
