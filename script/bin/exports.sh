@@ -9,7 +9,7 @@ export WORKSPACE=`pwd`
 # The following credentials can be stored in parameter store and retrieved dynamically 
 
 
-export atomType="ATOM"
+export atomType="GATEWAY"
 export atomName="LOCAL_LNX_ATM_DEV_01"
 export INSTALL_DIR="/dev-atom"
 

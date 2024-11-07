@@ -82,9 +82,7 @@ log_info "Initiating shutdown sequence.."
 service_stop
 #Check status of atom and if not stopped, try to stop it manually
 for i in 1 2 3 4 5; do
-  log_info "Checking Atom Status (Attempt $i)"
-  returnMessage=$(./atom status)
-  returnCode=$?
+  log_info "Checking Atom Status (Attempt $i)"createRestartSystemd
   log_info " > $returnMessage - Code: $returnCode"
   if [ $returnCode -ne 0 ];then
     log_info " > Atom stopped successfully"

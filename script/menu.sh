@@ -105,7 +105,10 @@ case "$y" in
   g)
     tput reset
     clear
-    source ./bin/createRestartSystemd.sh
+	case $atomType in
+		"MOLECULE") source ./bin/createRestarMoleculetSystemd.sh;;
+		"GATEWAY")  source ./bin/createRestarGatewaySystemd.sh;;
+	esac
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
 
