@@ -14,9 +14,3 @@ echo "Service group '$service_group' deleted (if it existed and was not in use).
 # Delete the sudoers file
 sudo rm -f /etc/sudoers.d/boomi
 echo "Sudoers file '/etc/sudoers.d/boomi' deleted (if it existed)."
-
-if sudo rm -f /etc/sudoers.d/boomi; then
-  echo_green "Sudoers file '/etc/sudoers.d/boomi' deleted successfully."
-else
-  echo_yellow "Warning: Failed to delete sudoers file '/etc/sudoers.d/boomi'."
-fi

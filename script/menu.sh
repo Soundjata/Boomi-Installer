@@ -133,6 +133,11 @@ case "$y" in
     sudo rm /etc/systemd/system/"boomi-${atomName}.service"
     sudo systemctl daemon-reload
     echo "Service Boomi '$atomName' removed."
+	if sudo rm -f /etc/sudoers.d/boomi; then
+  		echo_green "Sudoers file '/etc/sudoers.d/boomi' deleted successfully."
+	else
+  		echo_yellow "Warning: Failed to delete sudoers file '/etc/sudoers.d/boomi'."
+	fi
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
 
