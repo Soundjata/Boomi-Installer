@@ -45,9 +45,6 @@ systemctl enable boomi-${atomName}.service
 
 ${INSTALL_DIR}/Gateway_${atomName}/bin/atom stop
 
-# Reload systemd to recognize the new service
-systemctl daemon-reload
-
 systemctl start boomi-${atomName}.service
 
 echo "Boomi service created and enabled as 'boomi-${atomName}.service'."
