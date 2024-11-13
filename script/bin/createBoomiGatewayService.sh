@@ -14,6 +14,7 @@ service_content="[Unit]
 Description=Boomi Atom
 SourcePath=${INSTALL_DIR}/Gateway_${atomName}
 After=network.target
+RequiresMountsFor=${INSTALL_DIR}/Gateway_${atomName}
 [Service]
 LimitNOFILE=65536
 LimitNPROC=65536
