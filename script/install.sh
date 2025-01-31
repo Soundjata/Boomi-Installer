@@ -11,5 +11,5 @@ sudo git clone https://github.com/Soundjata/Boomi-Installer.git /etc/Boomi-Insta
 sudo chmod +x /etc/Boomi-Installer/script/menu.sh
 sudo chown $ID:$ID -R /etc/Boomi-Installer
 
-sudo apt-get remove git
-sudo apt-get purge git
+sudo apt-get -qq --yes remove git
+sudo apt-get -qq --yes purge git
