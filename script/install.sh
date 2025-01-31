@@ -14,12 +14,6 @@ sudo chown $ID:$ID -R /etc/Boomi-Installer
 sudo apt-get -qq --yes remove git
 sudo apt-get -qq --yes purge git
 
-#Increase network buffers:
-sudo sysctl -w net.core.rmem_max=8388608
-sudo sysctl -w net.core.wmem_max=8388608
-sudo sysctl -w net.core.rmem_default=65536
-sudo sysctl -w net.core.wmem_default=65536
-
 # Use a lock file to prevent race conditions
 LOCKFILE="/tmp/limits.conf.lock"
 
