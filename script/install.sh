@@ -35,12 +35,6 @@ if ( set -o noclobber; echo "$$" > "$LOCKFILE" ) 2> /dev/null; then
     echo "${ID} hard nofile 65536" | sudo tee -a /etc/security/limits.conf > /dev/null   # Corrected hard limit value
   fi
 
-
-  # Set SELinux to permissive (ideally, address specific SELinux issues instead)
-  if ! grep -q "^SELINUX=permissive$" /etc/selinux/config; then
-    sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config  # More robust way to modify the config
-  fi
-
   rm -f "$LOCKFILE"  # Remove the lock file
 else
   echo "Warning: Could not acquire lock. Another process might be modifying limits.conf."
