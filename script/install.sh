@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt-get -qq --yes update
-sudo apt-get -qq --yes install git unzip zip jq
+sudo apt-get -qq --yes install git nano unzip zip jq
 
 ID=$(id -u)
 
