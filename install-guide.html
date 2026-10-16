@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boomi Atom — Guide d'installation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --boomi-blue: #0073e6;
+      --boomi-dark: #003366;
+      --boomi-light: #e8f2ff;
+      --success: #2d9e5f;
+      --warning: #e07b00;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --border: #dde3ed;
+      --code-bg: #1e2535;
+      --code-text: #e2e8f0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f6fb;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--boomi-dark) 0%, var(--boomi-blue) 100%);
+      color: white;
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: 120px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    header h1 { font-size: 36px; font-weight: 700; margin-bottom: 10px; position: relative; }
+    header p  { font-size: 16px; opacity: 0.85; max-width: 600px; position: relative; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+
+    /* PREREQS */
+    .prereqs {
+      background: white;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .prereqs h2 { font-size: 18px; color: var(--boomi-dark); margin-bottom: 18px; }
+    .prereqs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 600px) { .prereqs-grid { grid-template-columns: 1fr; } }
+    .prereq-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--boomi-light); border-radius: 8px; padding: 14px 16px;
+    }
+    .prereq-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .prereq-item strong { font-size: 14px; display: block; color: var(--boomi-dark); }
+    .prereq-item span  { font-size: 13px; color: var(--muted); }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 24px; }
+    .step {
+      background: white; border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .step-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 28px; border-bottom: 1px solid var(--border);
+    }
+    .step-number {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--boomi-blue); color: white;
+      font-weight: 700; font-size: 16px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-number.manual { background: #64748b; }
+    .step-header h3 { font-size: 17px; color: var(--boomi-dark); font-weight: 600; }
+    .step-header .step-meta {
+      margin-left: auto; font-size: 12px; color: var(--muted);
+      background: #f3f4f6; padding: 3px 10px; border-radius: 12px; white-space: nowrap;
+    }
+    .step-body { padding: 24px 28px; }
+    .step-body p { font-size: 14px; color: #374151; margin-bottom: 14px; }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* CODE */
+    .code-block {
+      background: var(--code-bg); border-radius: 8px;
+      overflow: hidden; margin: 14px 0; font-size: 13px;
+    }
+    .code-label {
+      background: rgba(255,255,255,0.07); color: #94a3b8;
+      padding: 6px 16px; font-size: 11px; letter-spacing: 0.5px;
+      text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    pre {
+      padding: 16px 20px; overflow-x: auto; color: var(--code-text);
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; line-height: 1.7;
+    }
+    .comment { color: #64748b; }
+    .kw  { color: #7dd3fc; }
+    .val { color: #86efac; }
+    .flag{ color: #fbbf24; }
+    .cmd { color: #c084fc; }
+    .key { color: #f9a8d4; }
+
+    /* CALLOUTS */
+    .callout {
+      display: flex; gap: 12px; border-radius: 8px;
+      padding: 14px 16px; margin: 14px 0; font-size: 14px;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .callout.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+    .callout.danger  { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+
+    /* CONFIG TABLE */
+    .config-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+    .config-table th {
+      background: var(--boomi-light); color: var(--boomi-dark);
+      text-align: left; padding: 10px 14px; font-weight: 600;
+      border-bottom: 2px solid var(--boomi-blue);
+    }
+    .config-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .config-table tr:last-child td { border-bottom: none; }
+    .config-table tr:hover td { background: #f9fafb; }
+    .tag {
+      display: inline-block; font-size: 11px; padding: 2px 8px;
+      border-radius: 10px; font-weight: 600;
+    }
+    .tag.required { background: #fee2e2; color: #991b1b; }
+    .tag.optional { background: #f3f4f6; color: #6b7280; }
+
+    /* FLOW */
+    .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 14px 0; font-size: 13px; }
+    .flow-node {
+      background: var(--boomi-light); border: 1px solid #bfdbfe;
+      border-radius: 8px; padding: 8px 14px; color: var(--boomi-dark); font-weight: 500;
+    }
+    .flow-arrow { color: var(--boomi-blue); font-size: 18px; font-weight: 700; }
+
+    /* TROUBLESHOOT */
+    .trouble-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .trouble-list li {
+      display: flex; gap: 12px; background: #fafafa;
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 14px 16px; font-size: 14px;
+    }
+    .trouble-list .t-icon { font-size: 18px; flex-shrink: 0; }
+    .trouble-list strong { display: block; color: var(--text); margin-bottom: 4px; }
+    .trouble-list span { color: var(--muted); font-size: 13px; }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted); margin: 36px 0 16px;
+    }
+
+    footer {
+      text-align: center; padding: 32px 24px; font-size: 13px;
+      color: var(--muted); border-top: 1px solid var(--border); margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Recette · Viseo</div>
+  <h1>Installation du Runtime Boomi</h1>
+  <p>Procédure d'installation du runtime Boomi (Atom) en tant que service systemd sur Linux — environnement <strong>01a_ONPREM_RCT</strong>.</p>
+</header>
+
+<div class="container">
+
+  <!-- PREREQS -->
+  <p class="section-title">Avant de commencer</p>
+  <div class="prereqs">
+    <h2>📋 Prérequis</h2>
+    <div class="prereqs-grid">
+      <div class="prereq-item">
+        <span class="prereq-icon">🔑</span>
+        <div>
+          <strong>Account ID</strong>
+          <span>Ex : <code>moncompte-XXXXXX</code><br>Settings › Account Information</span>
+        </div>
+      </div>
+      <div class="prereq-item">
+        <span class="prereq-icon">🪙</span>
+        <div>
+          <strong>Auth Token</strong>
+          <span>Format : <code>BOOMI_TOKEN.email:xxxx</code><br>Settings › API Tokens</span>
+        </div>
+      </div>
+      <div class="prereq-item">
+        <span class="prereq-icon">☕</span>
+        <div>
+          <strong>Java (JRE 11+)</strong>
+          <span>Requis par le runtime Boomi.<br><code>java -version</code> pour vérifier.</span>
+        </div>
+      </div>
+      <div class="prereq-item">
+        <span class="prereq-icon">🐧</span>
+        <div>
+          <strong>Linux 64-bit + sudo</strong>
+          <span>Ubuntu 20.04+ recommandé.<br><code>jq</code> et <code>wget</code> requis.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEPS -->
+  <p class="section-title">Étapes d'installation</p>
+  <div class="steps">
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <h3>Créer le groupe et l'utilisateur de service</h3>
+        <span class="step-meta">sudo requis</span>
+      </div>
+      <div class="step-body">
+        <p>L'Atom tourne sous un compte système dédié sans shell interactif. Il ne doit pas tourner sous ton propre compte.</p>
+        <div class="code-block">
+          <div class="code-label">Création du groupe et du user</div>
+          <pre><span class="cmd">sudo</span> groupadd boomigroup
+<span class="cmd">sudo</span> useradd <span class="flag">-r -m -s</span> /bin/false <span class="flag">-g</span> boomigroup <span class="flag">-c</span> <span class="val">"Boomi service user"</span> boomiuser</pre>
+        </div>
+        <p>Ajoute les droits sudo limités pour que le service puisse gérer lui-même son démarrage/arrêt :</p>
+        <div class="code-block">
+          <div class="code-label">Droits systemctl sans mot de passe</div>
+          <pre><span class="kw">cat</span> <span class="val">&lt;&lt;EOF</span> | <span class="cmd">sudo</span> tee /etc/sudoers.d/boomi
+boomiuser ALL=NOPASSWD: /bin/systemctl start boomi-LOCAL_LIN_RUN_RCT_01.service
+boomiuser ALL=NOPASSWD: /bin/systemctl stop boomi-LOCAL_LIN_RUN_RCT_01.service
+boomiuser ALL=NOPASSWD: /bin/systemctl restart boomi-LOCAL_LIN_RUN_RCT_01.service
+boomiuser ALL=NOPASSWD: /bin/systemctl status boomi-LOCAL_LIN_RUN_RCT_01.service
+<span class="val">EOF</span>
+<span class="cmd">sudo</span> chmod 0440 /etc/sudoers.d/boomi</pre>
+        </div>
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <div>Le wildcard <code>boomi-*.service</code> est à éviter dans sudoers — le <code>*</code> y correspond à n'importe quelle chaîne y compris les <code>/</code>, ce qui génère des warnings de sécurité. Toujours utiliser le nom exact du service.</div>
+        </div>
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div>Si tu utilises un user existant, le script de création est ignoré et <strong>les droits sudoers ne sont pas ajoutés</strong>. Toujours créer un user dédié.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <h3>Télécharger l'installateur Boomi</h3>
+        <span class="step-meta">wget</span>
+      </div>
+      <div class="step-body">
+        <p>L'installateur officiel Boomi est téléchargé depuis la plateforme. Il sera utilisé à l'étape 4.</p>
+        <div class="code-block">
+          <div class="code-label">Téléchargement</div>
+          <pre><span class="cmd">wget</span> https://platform.gb.boomi.com/atom/atom_install64.sh
+<span class="cmd">chmod</span> +x ./atom_install64.sh</pre>
+        </div>
+        <div class="callout danger">
+          <span class="callout-icon">🔴</span>
+          <div><strong>Erreur 407 Proxy Authentication Required</strong> — rencontrée en recette lors du téléchargement du JRE par le script d'installation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <h3>Obtenir le token d'installation</h3>
+        <span class="step-meta">Console Boomi · valable 60 min</span>
+      </div>
+      <div class="step-body">
+        <p>Le token d'installation est généré depuis la console Boomi. Il lie l'Atom installé à ton compte et à l'environnement cible.</p>
+
+        <div class="flow">
+          <div class="flow-node">Console Boomi<br><small>Manage › Atom Management</small></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node">+ Add Atom<br><small>Type : Atom</small></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node">Copier le token<br><small>valable 60 min</small></div>
+        </div>
+
+        <ol style="font-size:14px; color:#374151; padding-left:20px; line-height:2;">
+          <li>Dans la console Boomi : <strong>Manage › Atom Management</strong></li>
+          <li>Cliquer <strong>+ New Atom</strong></li>
+          <li>Sélectionner l'environnement <strong>01a_ONPREM_RCT</strong></li>
+          <li>Le token s'affiche — le copier immédiatement</li>
+        </ol>
+
+        <div class="code-block">
+          <div class="code-label">Exemple de token généré — recette</div>
+          <pre><span class="val">atom-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></pre>
+        </div>
+
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div>Le token expire après <strong>60 minutes</strong>. Ne pas le générer trop tôt avant de lancer l'installation. Si expiré, en générer un nouveau depuis la même interface.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <h3>Installer l'Atom</h3>
+        <span class="step-meta">atom_install64.sh</span>
+      </div>
+      <div class="step-body">
+        <p>Créer le dossier d'installation puis lancer l'installateur en mode interactif. L'installateur guide à travers chaque paramètre.</p>
+        <div class="code-block">
+          <div class="code-label">Lancement</div>
+          <pre><span class="cmd">sudo</span> ./atom_install64.sh</pre>
+        </div>
+        <p>L'installateur demande chaque paramètre interactivement. Valeurs saisies en recette :</p>
+        <div class="code-block">
+          <div class="code-label">Réponses aux prompts de l'installateur</div>
+          <pre><span class="comment">Atom name          :</span> <span class="val">LOCAL_LIN_RUN_RCT_01</span>
+<span class="comment">Install token      :</span> <span class="val">atom-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span>
+<span class="comment">Install directory  :</span> <span class="val">/int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/</span>
+<span class="comment">Proxy host         :</span> <span class="val">proxy.host</span>
+<span class="comment">Proxy port         :</span> <span class="val">8080</span>
+<span class="comment">Proxy user         :</span> <span class="val">user</span>
+<span class="comment">Proxy password     :</span> <span class="val">password</span></pre>
+        </div>
+        <p>Dossier créé : <code>/int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/</code></p>
+        <div class="callout success">
+          <span class="callout-icon">✅</span>
+          <div>À la fin de l'install, l'Atom apparaît <strong>Online</strong> dans la console Boomi sous Atom Management (environnement <strong>01a_ONPREM_RCT</strong>).</div>
+        </div>
+
+        <p style="margin-top:16px;">Copier ensuite les propriétés de purge dans le dossier de l'Atom :</p>
+        <div class="code-block">
+          <div class="code-label">Propriétés de purge (container.properties)</div>
+          <pre><span class="kw">cat</span> <span class="val">&lt;&lt;EOF</span> &gt;&gt; /int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/conf/container.properties
+com.boomi.container.dataDirNestLevel=2
+com.boomi.container.executionDirNestLevel=2
+com.boomi.container.component.purgeDays=15
+com.boomi.container.data.purgeDays=15
+com.boomi.container.logs.purgeDays=15
+com.boomi.container.purge.numPurgeThreads=2
+com.boomi.container.temp.purgeDays=7
+<span class="val">EOF</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <h3>Créer le service systemd</h3>
+        <span class="step-meta">sudo requis</span>
+      </div>
+      <div class="step-body">
+
+        <p><strong>5a — Transfert de propriété</strong> du dossier d'installation à l'utilisateur de service :</p>
+        <div class="code-block">
+          <div class="code-label">Propriétaire des fichiers Atom</div>
+          <pre><span class="cmd">sudo</span> chown <span class="flag">-R</span> boomiuser:boomigroup /int-atom</pre>
+        </div>
+
+        <p><strong>5b — Fichier de service</strong> dans <code>/etc/systemd/system/</code> :</p>
+        <div class="code-block">
+          <div class="code-label">Création du fichier .service</div>
+          <pre><span class="kw">cat</span> <span class="val">&lt;&lt;EOF</span> | <span class="cmd">sudo</span> tee /etc/systemd/system/boomi-LOCAL_LIN_RUN_RCT_01.service
+[Unit]
+Description=Boomi LOCAL_LIN_RUN_RCT_01
+After=network.target
+
+[Service]
+Type=forking
+User=boomiuser
+Group=boomigroup
+Restart=always
+ExecStart=/int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/bin/atom start
+ExecStop=/int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/bin/atom stop
+ExecReload=/int-atom/Boomi_AtomSphere/Atom/Atom_LOCAL_LIN_RUN_RCT_01/bin/atom restart
+
+[Install]
+WantedBy=multi-user.target
+<span class="val">EOF</span></pre>
+        </div>
+
+        <p><strong>5c — Activation et démarrage</strong> :</p>
+        <div class="code-block">
+          <div class="code-label">Activation au boot + démarrage immédiat</div>
+          <pre><span class="cmd">sudo</span> systemctl daemon-reload
+<span class="cmd">sudo</span> systemctl enable boomi-LOCAL_LIN_RUN_RCT_01.service
+<span class="cmd">sudo</span> systemctl start  boomi-LOCAL_LIN_RUN_RCT_01.service</pre>
+        </div>
+
+        <p>Vérification :</p>
+        <div class="code-block">
+          <div class="code-label">Statut du service</div>
+          <pre><span class="cmd">sudo</span> systemctl status boomi-LOCAL_LIN_RUN_RCT_01.service</pre>
+        </div>
+        <div class="callout success">
+          <span class="callout-icon">✅</span>
+          <div>Tu dois voir <strong>Active: active (running)</strong>. L'Atom reste Online dans la console Boomi dans les 30-60 secondes.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POINTS D'ATTENTION -->
+  <p class="section-title">Points d'attention</p>
+  <table class="config-table">
+    <thead>
+      <tr><th>Quoi</th><th>Pourquoi</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>atomName</code> — caractères valides</td>
+        <td>Systemd n'accepte que lettres, chiffres, <code>-</code> <code>_</code> <code>.</code>. Un espace ou <code>#</code> provoque <em>Invalid unit name</em> au <code>systemctl enable</code>.</td>
+      </tr>
+      <tr>
+        <td><code>chown</code> avant ou après l'install</td>
+        <td>Faire <code>chown -R boomiuser:boomigroup /int-atom</code> <strong>après</strong> l'installation. Si fait avant, les fichiers créés par l'installateur appartiennent à root et l'Atom ne peut pas écrire ses logs.</td>
+      </tr>
+      <tr>
+        <td>Token d'installation — 60 min</td>
+        <td>Si l'install échoue ou traîne, le token est expiré. Relancer l'étape 3 pour en obtenir un nouveau.</td>
+      </tr>
+      <tr>
+        <td>Token d'installation — console Boomi</td>
+        <td>Généré depuis <strong>Manage › Atom Management › New Atom</strong>. Format : <code>atom-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>. Valable 60 min — en générer un nouveau si l'install traîne.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TROUBLESHOOTING -->
+  <p class="section-title">Dépannage</p>
+  <ul class="trouble-list">
+    <li>
+      <span class="t-icon">🔴</span>
+      <div>
+        <strong>Invalid unit name</strong>
+        <span>Caractère interdit dans <code>atomName</code>. Renommer l'Atom (lettres, chiffres, <code>-</code> <code>_</code> <code>.</code> seulement), recréer le fichier service.</span>
+      </div>
+    </li>
+    <li>
+      <span class="t-icon">🔴</span>
+      <div>
+        <strong>Erreur 407 Proxy Authentication Required</strong>
+        <span>Rencontré en recette lors du téléchargement du JRE par le script d'installation. Configurer <code>http_proxy</code> / <code>https_proxy</code> avant de lancer l'installateur, ou passer <code>-VproxyHost</code>, <code>-VproxyPort</code>, <code>-VproxyUser</code>, <code>-VproxyPassword</code> en arguments.</span>
+      </div>
+    </li>
+    <li>
+      <span class="t-icon">🔴</span>
+      <div>
+        <strong>Permission denied au démarrage</strong>
+        <span><code>chown -R boomiuser:boomigroup /int-atom</code> n'a pas été fait après l'installation. Le relancer puis <code>systemctl restart</code>.</span>
+      </div>
+    </li>
+    <li>
+      <span class="t-icon">🟡</span>
+      <div>
+        <strong>Atom absent de la console Boomi après install</strong>
+        <span>Token expiré (60 min). Générer un nouveau token depuis <strong>Manage › Atom Management › New Atom</strong> et relancer l'étape 4. Vérifier aussi que Java est accessible : <code>java -version</code>.</span>
+      </div>
+    </li>
+    <li>
+      <span class="t-icon">🟡</span>
+      <div>
+        <strong>Consulter les logs du service</strong>
+        <span><code>journalctl -u boomi-LOCAL_LIN_RUN_RCT_01.service -n 50 --no-pager</code></span>
+      </div>
+    </li>
+  </ul>
+
+</div>
+
+<footer>
+  Boomi Installer — Viseo
+</footer>
+
+</body>
+</html>
