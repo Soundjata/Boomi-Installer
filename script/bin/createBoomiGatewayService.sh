@@ -7,11 +7,11 @@
 service_file="/etc/systemd/system/boomi-${atomName}.service"
 
 # Change ownership of the installation directory
-chown -R "$service_user":"$service_group" "$INSTALL_DIR"
+sudo chown -R "$service_user":"$service_group" "$INSTALL_DIR"
 
 # Construct the service content
 service_content="[Unit]
-Description=Boomi Atom
+Description=Boomi Gateway
 SourcePath=${INSTALL_DIR}/Gateway_${atomName}
 After=network.target
 RequiresMountsFor=${INSTALL_DIR}/Gateway_${atomName}
@@ -26,8 +26,8 @@ IgnoreSIGPIPE=no
 KillMode=process
 GuessMainPID=yes
 RemainAfterExit=yes
-#User=${service_user}
-#Group=${service_group}
+User=${service_user}
+Group=${service_group}
 ExecStart=${INSTALL_DIR}/Gateway_${atomName}/bin/atom start
 ExecStop=${INSTALL_DIR}/Gateway_${atomName}/bin/atom stop
 ExecReload=${INSTALL_DIR}/Gateway_${atomName}/bin/atom restart
@@ -39,13 +39,13 @@ WantedBy=multi-user.target
 echo "$service_content" | sudo tee "$service_file" > /dev/null
 
 # Reload systemd to recognize the new service
-systemctl daemon-reload
+sudo systemctl daemon-reload
 
 # Enable the service to start on boot
-systemctl enable boomi-${atomName}.service
+sudo systemctl enable boomi-${atomName}.service
 
 ${INSTALL_DIR}/Gateway_${atomName}/bin/atom stop
 
-systemctl start boomi-${atomName}.service
+sudo systemctl start boomi-${atomName}.service
 
 echo "Boomi service created and enabled as 'boomi-${atomName}.service'."

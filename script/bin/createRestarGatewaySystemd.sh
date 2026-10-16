@@ -3,18 +3,17 @@
 # Source the exports file to get variable definitions
 #source ./bin/exports.sh
 
-sudo_content="
-${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-*.service
-"
+sudo_content="${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-${atomName}.service"
 
 echo_yellow "Ajout des permissions sudo pour le user Boomi..."
-echo "$sudo_content" | sudo tee -a /etc/sudoers.d/boomi > /dev/null
+echo "$sudo_content" | sudo tee /etc/sudoers.d/boomi > /dev/null
+sudo chmod 0440 /etc/sudoers.d/boomi
 echo_green "Permissions sudo ajoutées avec succès."
 
 
@@ -32,24 +31,25 @@ restart_log="restart${LOCALHOST_ID}.log"
 service_name="'${service_name}'"
 
 service_start() {
-  log_info "Starting Atom via systemd"
+  log_info "Starting Gateway via systemd"
   sudo /bin/systemctl start $service_name
+  returnCode=$?
   if [ $returnCode -eq 0 ];then
-    log_info " > Successfully started Atom service ($returnCode)"
+    log_info " > Successfully started Gateway service ($returnCode)"
   else
-    log_warn " > Atom service not started ($returnCode).. sleeping 5sec.."
+    log_warn " > Gateway service not started ($returnCode).. sleeping 5sec.."
     sleep 5
   fi
 }
 
 service_stop() {
-  log_info "Stopping Atom via systemd"
+  log_info "Stopping Gateway via systemd"
   sudo /bin/systemctl stop $service_name
   returnCode=$?
   if [ $returnCode -eq 0 ];then
-    log_info " > Successfully stopped Atom service ($returnCode)"
+    log_info " > Successfully stopped Gateway service ($returnCode)"
   else
-    log_warn " > Atom service not stopped ($returnCode).. sleeping 5sec.."
+    log_warn " > Gateway service not stopped ($returnCode).. sleeping 5sec.."
     sleep 5
   fi
 }
@@ -66,7 +66,7 @@ service_status() {
       ExecMainPID=$(sudo /bin/systemctl show -p ExecMainPID $service_name)
       log_info " > $ExecMainPID"
       if [ $ExecMainPID = "ExecMainPID=0" ];then
-        log_warn " > Issue with PID detection identified. Please check the state of the Atom and systemd manually"
+        log_warn " > Issue with PID detection identified. Please check the state of the Gateway and systemd manually"
       fi
       status=0
     fi
@@ -95,28 +95,28 @@ echo "=====================================================================" >> 
 log_info "Initiating shutdown sequence.."
 #Attempt shutdown via systemd
 service_stop
-#Check status of atom and if not stopped, try to stop it manually
+#Check status of gateway and if not stopped, try to stop it manually
 for i in 1 2 3 4 5; do
-  log_info "Checking Atom Status (Attempt $i)"createRestartSystemd
+  log_info "Checking Gateway Status (Attempt $i)"
   log_info " > $returnMessage - Code: $returnCode"
   if [ $returnCode -ne 0 ];then
-    log_info " > Atom stopped successfully"
+    log_info " > Gateway stopped successfully"
     atom_status="stopped"
     break
   else
     atom_status="running"
-    log_info " > Atom still running.. sleeping 5sec.."
+    log_info " > Gateway still running.. sleeping 5sec.."
     sleep 5
   fi
   if [ $atom_status != "stopped" ];then
-  log_info "Stopping Atom via atom command"
+  log_info "Stopping Gateway via atom command"
   returnMessage=$(./atom stop)
   returnCode=$?
   log_info " > $returnMessage - Code: $returnCode"
   fi
 done
 if [ $atom_status != "stopped" ];then
-  log_err "Failure to stop Atom, please check manually"
+  log_err "Failure to stop Gateway, please check manually"
   exit 1
 fi
 
@@ -135,30 +135,30 @@ for i in 1 2 3 4 5; do
   fi
 done
 
-#Check atom. If not started attempt to start manually and then trigger systemd start again
+#Check gateway. If not started attempt to start manually and then trigger systemd start again
 for i in 1 2 3 4 5; do
-  log_info "Checking Atom Status (Attempt $i)"
+  log_info "Checking Gateway Status (Attempt $i)"
   returnMessage=$(./atom status)
   returnCode=$?
   log_info " > $returnMessage - Code: $returnCode"
   if [ $returnCode -eq 0 ];then
-    log_info " > Atom started successfully"
+    log_info " > Gateway started successfully"
     atom_status="running"
     break
   else
     atom_status="stopped"
-    log_info " > Atom not started yet.. sleeping 20sec.."
+    log_info " > Gateway not started yet.. sleeping 20sec.."
     sleep 20
   fi
 done
 if [ $atom_status != "running" ];then
-  log_info "Starting Atom via atom command"
+  log_info "Starting Gateway via atom command"
   returnMessage=$(./atom start)
   returnCode=$?
   log_info "  > $returnMessage - Code: $returnCode"
 fi
-if [ $service_status -ne 0 && $atom_status != "running" ];then
-  log_err "Warning, something went wrong! Please check the state of the Atom and systemd manually as they may be out of sync"
+if [ $service_status -ne 0 ] && [ "$atom_status" != "running" ];then
+  log_err "Warning, something went wrong! Please check the state of the Gateway and systemd manually as they may be out of sync"
 else
   log_info "Restart request completed successfully!"
 fi'
@@ -173,7 +173,7 @@ chown -R "$service_user":"$service_group" "$script_file"
 chmod +x "$script_file"
 
 # update container properties
-#input="conf/molecule_container.properties"
-##while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
+input="conf/gateway_container.properties"
+while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
 
 echo "Restart script created at: $script_file"
