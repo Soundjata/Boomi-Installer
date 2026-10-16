@@ -409,6 +409,37 @@ function call_script {
   eval ${script}
 }
 
+function preflight {
+  local errors=0
+
+  if [ -z "${atomName}" ]; then
+    echoee "atomName est vide — configurez exports.sh (option a)."
+    errors=$((errors+1))
+  elif ! echo "${atomName}" | grep -qE '^[a-zA-Z0-9._-]+$'; then
+    echoee "atomName '${atomName}' contient des caractères invalides pour systemd."
+    echoee "Autorisés : lettres, chiffres, - _ ."
+    errors=$((errors+1))
+  fi
+
+  if [ -z "${INSTALL_DIR}" ]; then
+    echoee "INSTALL_DIR est vide — configurez exports.sh (option a)."
+    errors=$((errors+1))
+  fi
+
+  if [ -z "${service_user}" ] || [ -z "${service_group}" ]; then
+    echoee "service_user ou service_group est vide — configurez exports.sh (option a)."
+    errors=$((errors+1))
+  fi
+
+  if [[ ${authToken} != BOOMI_TOKEN.* ]]; then
+    echoee "authToken invalide — format attendu : BOOMI_TOKEN.email:clé"
+    errors=$((errors+1))
+  fi
+
+  [ $errors -gt 0 ] && return 255
+  return 0
+}
+
 echo_red()(echo -e "\e[31m${1}\e[0m")
 echo_green()(echo -e "\e[32m${1}\e[0m")
 echo_yellow()(echo -e "\e[33m${1}\e[0m")

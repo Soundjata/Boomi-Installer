@@ -9,12 +9,12 @@ export WORKSPACE=`pwd`
 # The following credentials can be stored in parameter store and retrieved dynamically 
 
 
-export atomType="GATEWAY"
-export atomName="LOCAL_LNX_GTW_DEV_01"
-export INSTALL_DIR="/dev-gateway"
+export atomType="ATOM"
+export atomName=""
+export INSTALL_DIR=""
 
-export service_user="soundjata"
-export service_group="soundjata"
+export service_user="boomiuser"
+export service_group="boomigroup"
 
 
 export accountName="Viseo"

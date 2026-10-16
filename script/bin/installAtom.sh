@@ -20,6 +20,24 @@ then
        return 255;
 fi
 
+if [ ! -f ./atom_install64.sh ]; then
+  echoee "atom_install64.sh introuvable. Téléchargez-le d'abord depuis platform.gb.boomi.com."
+  return 255
+fi
+
+if ! command -v java >/dev/null 2>&1; then
+  echoee "Java introuvable. Installez JRE 11+ avant de continuer."
+  return 255
+fi
+_java_ver=$(java -version 2>&1 | grep -oE '"[0-9]+(\.[0-9]+)+"' | tr -d '"' | head -1)
+_java_major=$(echo "${_java_ver}" | cut -d. -f1)
+[ "${_java_major}" = "1" ] && _java_major=$(echo "${_java_ver}" | cut -d. -f2)
+if [ "${_java_major:-0}" -lt 11 ] 2>/dev/null; then
+  echoee "Java ${_java_major} détecté. Boomi requiert Java 11+."
+  return 255
+fi
+echoi "Java ${_java_major} détecté — OK."
+
 installDir=${INSTALL_DIR}
 mkdir -p $installDir
 ATOM_HOME=$installDir/Atom_$atomName

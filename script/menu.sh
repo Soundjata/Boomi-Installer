@@ -3,6 +3,23 @@
 source ./bin/common.sh
 source ./bin/exports.sh
 
+function show_config {
+  echo ""
+  echo_cyan "  ┌──────────────────────────────────────────────┐"
+  printf "  │  %-12s : %-31s│\n" "atomType"    "${atomType}"
+  printf "  │  %-12s : %-31s│\n" "atomName"    "${atomName}"
+  printf "  │  %-12s : %-31s│\n" "INSTALL_DIR" "${INSTALL_DIR}"
+  printf "  │  %-12s : %-31s│\n" "service"     "${service_user}:${service_group}"
+  printf "  │  %-12s : %-31s│\n" "accountId"   "${accountId}"
+  echo_cyan "  └──────────────────────────────────────────────┘"
+  echo ""
+  read -p "  Confirmer ? [o/N] : " _confirm
+  if [[ "$_confirm" != "o" && "$_confirm" != "O" ]]; then
+    echo_yellow "Annulé."
+    return 1
+  fi
+  return 0
+}
 
 while : ; do
 
@@ -66,6 +83,8 @@ case "$y" in
   c)
   	tput reset
 	clear
+	preflight || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
+	show_config || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
 	case $atomType in
 	"ATOM") 	ATOM_HOME=${INSTALL_DIR}/Atom_${atomName}
 				installer_script="./bin/installAtom.sh"
@@ -91,16 +110,14 @@ case "$y" in
   d)
   	tput reset
 	clear
-	echo_yellow "Cette version ne prend pas en charge la création de groupe (voir admin systéme)"
-	#source ./bin/createUserGroup.sh
+	source ./bin/createUserGroup.sh
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 
   e)
   	tput reset
 	clear
-	echo_yellow "Cette version ne prend pas en charge la création de user (voir admin systéme)"
-	#source ./bin/createUserService.sh
+	source ./bin/createUserService.sh
 	read -p "Appuyez sur [ENTREE] pour continuer..."
 	;;
 
@@ -117,11 +134,25 @@ case "$y" in
   f)
     tput reset
     clear
+	preflight || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
+	show_config || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
 	case $atomType in
 		"ATOM") 	source ./bin/createBoomiAtomService.sh;;
 		"MOLECULE") source ./bin/createBoomiMoleculeService.sh;;
 		"GATEWAY") source ./bin/createBoomiGatewayService.sh;;
 	esac
+	echo_yellow "Démarrage du service..."
+	sudo systemctl start boomi-${atomName}.service
+	echo_yellow "Attente du démarrage (10s)..."
+	sleep 10
+	_state=$(sudo systemctl show -p ActiveState boomi-${atomName}.service 2>/dev/null | cut -d= -f2)
+	if [ "${_state}" = "active" ]; then
+		echo_green "Service boomi-${atomName} démarré avec succès."
+	else
+		echo_red "Service en état '${_state}'. Consultez les logs :"
+		echo_red "journalctl -u boomi-${atomName}.service -n 30 --no-pager"
+	fi
+	sudo systemctl status boomi-${atomName}.service
     read -p "Appuyez sur [ENTREE] pour continuer..."
     ;;
 

@@ -29,9 +29,9 @@ WantedBy=multi-user.target
 echo "$service_content" | sudo tee "$service_file" > /dev/null
 
 # Reload systemd to recognize the new service
-systemctl daemon-reload
+sudo systemctl daemon-reload
 
 # Enable the service to start on boot
-systemctl enable boomi-${atomName}.service
+sudo systemctl enable boomi-${atomName}.service
 
 echo "Boomi service created and enabled as 'boomi-${atomName}.service'."

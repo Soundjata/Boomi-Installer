@@ -1,14 +1,12 @@
 #!/bin/bash
 
-sudo_content="
-${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-*.service
-"
+sudo_content="${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-${atomName}.service"
 
 # Check if the user already exists
 if id -u "$service_user" >/dev/null 2>&1; then
@@ -20,7 +18,10 @@ else
                -c "Boomi service user" \
                "$service_user"
   echo "Service user '$service_user' created."
-  echo_yellow "Ajout des permissions sudo pour le user Boomi..."
-  echo "$sudo_content" | sudo tee -a /etc/sudoers.d/boomi > /dev/null
-  echo_green "Permissions sudo ajoutées avec succès."
 fi
+
+# Toujours (re)créer le fichier sudoers pour éviter les doublons
+echo_yellow "Ajout des permissions sudo pour le user Boomi..."
+echo "$sudo_content" | sudo tee /etc/sudoers.d/boomi > /dev/null
+sudo chmod 0440 /etc/sudoers.d/boomi
+echo_green "Permissions sudo ajoutées avec succès."
