@@ -3,18 +3,17 @@
 # Source the exports file to get variable definitions
 #source ./bin/exports.sh
 
-sudo_content="
-${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-*.service
-${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-*.service
-"
+sudo_content="${service_user} ALL=NOPASSWD: /bin/systemctl start boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl stop boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl restart boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl status boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ActiveState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p SubState boomi-${atomName}.service
+${service_user} ALL=NOPASSWD: /bin/systemctl show -p ExecMainPID boomi-${atomName}.service"
 
 echo_yellow "Ajout des permissions sudo pour le user Boomi..."
-echo "$sudo_content" | sudo tee -a /etc/sudoers.d/boomi > /dev/null
+echo "$sudo_content" | sudo tee /etc/sudoers.d/boomi > /dev/null
+sudo chmod 0440 /etc/sudoers.d/boomi
 echo_green "Permissions sudo ajoutées avec succès."
 
 
@@ -34,6 +33,7 @@ service_name="'${service_name}'"
 service_start() {
   log_info "Starting Atom via systemd"
   sudo /bin/systemctl start $service_name
+  returnCode=$?
   if [ $returnCode -eq 0 ];then
     log_info " > Successfully started Atom service ($returnCode)"
   else
@@ -97,7 +97,7 @@ log_info "Initiating shutdown sequence.."
 service_stop
 #Check status of atom and if not stopped, try to stop it manually
 for i in 1 2 3 4 5; do
-  log_info "Checking Atom Status (Attempt $i)"createRestartSystemd
+  log_info "Checking Atom Status (Attempt $i)"
   log_info " > $returnMessage - Code: $returnCode"
   if [ $returnCode -ne 0 ];then
     log_info " > Atom stopped successfully"
@@ -157,7 +157,7 @@ if [ $atom_status != "running" ];then
   returnCode=$?
   log_info "  > $returnMessage - Code: $returnCode"
 fi
-if [ $service_status -ne 0 && $atom_status != "running" ];then
+if [ $service_status -ne 0 ] && [ "$atom_status" != "running" ];then
   log_err "Warning, something went wrong! Please check the state of the Atom and systemd manually as they may be out of sync"
 else
   log_info "Restart request completed successfully!"
@@ -173,7 +173,7 @@ chown -R "$service_user":"$service_group" "$script_file"
 chmod +x "$script_file"
 
 # update container properties
-#input="conf/molecule_container.properties"
-##while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
+input="conf/molecule_container.properties"
+while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
 
 echo "Restart script created at: $script_file"
