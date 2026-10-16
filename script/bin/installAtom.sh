@@ -48,22 +48,22 @@ ATOM_HOME=$installDir/Atom_$atomName
 proxyParams=""
 if [ ! -z "${proxyHost}" ]
 then
-  proxyParams="${proxyParams} -VproxyHost='${proxyHost}'"
+  proxyParams="${proxyParams} -VproxyHost=${proxyHost}"
 fi
 
 if [ ! -z "${proxyPort}" ]
 then
-  proxyParams="${proxyParams} -VproxyPort='${proxyPort}'"
+  proxyParams="${proxyParams} -VproxyPort=${proxyPort}"
 fi
 
 if [ ! -z "${proxyUser}" ]
 then
-   proxyParams="${proxyParams} -VproxyUser='${proxyUser}'"
+   proxyParams="${proxyParams} -VproxyUser=${proxyUser}"
 fi
 
 if [ ! -z "${proxyPassword}" ]
 then
- proxyParams="${proxyParams} -VproxyPassword='${proxyPassword}'"
+ proxyParams="${proxyParams} -VproxyPassword=${proxyPassword}"
 fi
 
 ./atom_install64.sh -q -console  \

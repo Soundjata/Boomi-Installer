@@ -45,43 +45,43 @@ ATOM_HOME=$installDir/Gateway_$atomName
 optionParams=""
 if [ ! -z "${WORK_DIR}" ]
 then
-     optionParams="${optionParams} -VworkPath='${WORK_DIR}'"
+     optionParams="${optionParams} -VworkPath=${WORK_DIR}"
 fi
 
 if [ ! -z "${JRE_HOME}" ]
 then
-     optionParams="${optionParams} -VjrePath='${JRE_HOME}'"
+     optionParams="${optionParams} -VjrePath=${JRE_HOME}"
 fi
 
 if [ ! -z "${JAVA_HOME}" ]
 then
-     optionParams="${optionParams} -VjavaPath='${JAVA_HOME}'"
+     optionParams="${optionParams} -VjavaPath=${JAVA_HOME}"
 fi
 
 if [ ! -z "${TMP_DIR}" ]
 then
-     optionParams="${optionParams} -VtmpPath='${TMP_DIR}'"
+     optionParams="${optionParams} -VtmpPath=${TMP_DIR}"
 fi
 
 proxyParams=""
 if [ ! -z "${proxyHost}" ]
 then
-	proxyParams="${proxyParams} -VproxyHost='${proxyHost}'"
+	proxyParams="${proxyParams} -VproxyHost=${proxyHost}"
 fi
 
 if [ ! -z "${proxyPort}" ]
 then
-	proxyParams="${proxyParams} -VproxyPort='${proxyPort}'"
+	proxyParams="${proxyParams} -VproxyPort=${proxyPort}"
 fi
 
 if [ ! -z "${proxyUser}" ]
 then
-	proxyParams="${proxyParams} -VproxyUser='${proxyUser}'"
+	proxyParams="${proxyParams} -VproxyUser=${proxyUser}"
 fi
 
 if [ ! -z "${proxyPassword}" ]
 then
-	proxyParams="${proxyParams} -VproxyPassword='${proxyPassword}'"
+	proxyParams="${proxyParams} -VproxyPassword=${proxyPassword}"
 fi
 
 
