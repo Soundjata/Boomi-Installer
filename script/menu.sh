@@ -66,7 +66,7 @@ case "$y" in
 	tput reset
 	clear
 	nano ./bin/exports.sh
-	source ./menu.sh
+	source ./bin/exports.sh
 	;;
 
   b)
@@ -86,24 +86,14 @@ case "$y" in
 	preflight || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
 	show_config || { read -p "Appuyez sur [ENTREE] pour continuer..."; continue; }
 	case $atomType in
-	"ATOM") 	ATOM_HOME=${INSTALL_DIR}/Atom_${atomName}
-				installer_script="./bin/installAtom.sh"
-				extra_args=""
+	"ATOM") 	installer_script="./bin/installAtom.sh"
 				source bin/installerToken.sh atomType=${atomType};;
-	"MOLECULE") ATOM_HOME=${INSTALL_DIR}/Molecule_${atomName}
-				installer_script="./bin/installMolecule.sh"
-				extra_args="WORK_DIR=\"${WORK_DIR}\" TMP_DIR=\"${TMP_DIR}\""
+	"MOLECULE") installer_script="./bin/installMolecule.sh"
 				source bin/installerToken.sh atomType=${atomType};;
-	"GATEWAY") ATOM_HOME=${INSTALL_DIR}/Gateway_${atomName}
-				installer_script="./bin/installGateway.sh"
-				extra_args="WORK_DIR=\"${WORK_DIR}\" TMP_DIR=\"${TMP_DIR}\""
+	"GATEWAY")  installer_script="./bin/installGateway.sh"
 				source bin/installerToken.sh atomType=${atomType};;
 	esac
-	ATOM_HOME="${INSTALL_DIR}/${atomType}_${atomName}"
-	echo ${installer_script}
-	echo ${extra_args}
-    ${installer_script} atomName="${atomName}" tokenId="${tokenId}" INSTALL_DIR="${INSTALL_DIR}" JRE_HOME="${JRE_HOME}" JAVA_HOME="${JAVA_HOME}" proxyHost="${proxyHost}" proxyPort="${proxyPort}" proxyUser="${proxyUser}" proxyPassword="${proxyPassword}" ${extra_args}
-	source ./menu.sh
+    ${installer_script} atomName="${atomName}" tokenId="${tokenId}" INSTALL_DIR="${INSTALL_DIR}" JRE_HOME="${JRE_HOME}" JAVA_HOME="${JAVA_HOME}" WORK_DIR="${WORK_DIR}" TMP_DIR="${TMP_DIR}" proxyHost="${proxyHost}" proxyPort="${proxyPort}" proxyUser="${proxyUser}" proxyPassword="${proxyPassword}"
   	read -p "Appuyez sur [ENTREE] pour continuer..."
   	;;
 
